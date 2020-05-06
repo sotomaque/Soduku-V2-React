@@ -1,21 +1,38 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AnyAction, Dispatch } from 'redux';
 
 import { Button } from 'components';
-import { NUMBERS } from 'typings';
+import { fillBlock, IReducer } from 'reducers';
+import { NUMBERS, BLOCK_COORDS, N } from 'typings';
 
 interface IProps {
-    value: NUMBERS
+  value: NUMBERS;
+}
+
+interface IState {
+  selectedBlock?: BLOCK_COORDS;
+  selectedValue: N;
 }
 
 const NumberButton: FC<IProps> = ({ value }) => {
+  const state = useSelector<IReducer, IState>(({ selectedBlock, workingGrid }) => ({
+      selectedBlock,
+      selectedValue:
+        workingGrid && selectedBlock ? 
+            workingGrid[selectedBlock[0]][selectedBlock[1]]
+        : 0
+  }));
 
-    function fill() {
-        console.log('fill', value);
-    }
+  const dispatch = useDispatch<Dispatch<AnyAction>>();
 
-    return (
-        <Button onClick={fill}>{value}</Button>
-    )
+  const fill = useCallback(() => {
+      if (state.selectedBlock && state.selectedValue === 0) {
+          dispatch(fillBlock(value, state.selectedBlock));
+      }
+  }, [dispatch, state.selectedBlock, state.selectedValue, value])
+
+  return <Button onClick={fill}>{value}</Button>;
 };
 
-export default NumberButton
+export default NumberButton;
