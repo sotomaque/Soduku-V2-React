@@ -1,0 +1,19 @@
+{
+  "files": {
+    "main.js": "/Soduku-V2-React/static/js/main.071639b6.chunk.js",
+    "main.js.map": "/Soduku-V2-React/static/js/main.071639b6.chunk.js.map",
+    "runtime-main.js": "/Soduku-V2-React/static/js/runtime-main.8b9f46ce.js",
+    "runtime-main.js.map": "/Soduku-V2-React/static/js/runtime-main.8b9f46ce.js.map",
+    "static/js/2.b2d5da3c.chunk.js": "/Soduku-V2-React/static/js/2.b2d5da3c.chunk.js",
+    "static/js/2.b2d5da3c.chunk.js.map": "/Soduku-V2-React/static/js/2.b2d5da3c.chunk.js.map",
+    "index.html": "/Soduku-V2-React/index.html",
+    "precache-manifest.6ff2300cc5d266646741be0a61dc34be.js": "/Soduku-V2-React/precache-manifest.6ff2300cc5d266646741be0a61dc34be.js",
+    "service-worker.js": "/Soduku-V2-React/service-worker.js",
+    "static/js/2.b2d5da3c.chunk.js.LICENSE.txt": "/Soduku-V2-React/static/js/2.b2d5da3c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8b9f46ce.js",
+    "static/js/2.b2d5da3c.chunk.js",
+    "static/js/main.071639b6.chunk.js"
+  ]
+}
