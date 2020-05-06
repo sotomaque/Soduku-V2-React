@@ -48,6 +48,7 @@ function reducer(state = initialState, action: AnyAction): IReducer {
                 if (compareArrays(state.workingGrid, state.solvedGrid)) {
                     global.hasWon = true;
                 }
+                
                 return { ...state, workingGrid: [...state.workingGrid] as GRID}
             }
 

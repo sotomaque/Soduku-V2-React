@@ -113,9 +113,12 @@ const Grid: FC = () => {
     }, 6000);
   }, [global.hasWon])
 
+
+
   return (
     <>
     { showConfetti && <Confetti />}
+
     <Container data-cy="grid-container">
       {Children.toArray(
         [...Array(9)].map((_, rowIndex) => (
