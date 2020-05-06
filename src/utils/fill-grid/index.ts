@@ -15,7 +15,7 @@ const numbers: NUMBERS[] = [1, 2, 3, 4, 5, 6, 7, 8, 9];
  * A backgracking / recursive function to check all possible
  * combinations of numbers until a solution is found
  *
- * @param grid 9x9 SODUKU grid
+ * @param grid 9x9 Soduku grid
  */
 function fillGrid(grid: GRID) {
   let row = 0;
