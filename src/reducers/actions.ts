@@ -1,6 +1,6 @@
 import { Action, AnyAction } from 'redux';
 
-import { BLOCK_COORDS } from 'typings';
+import { BLOCK_COORDS, NUMBERS } from 'typings';
 
 import * as types from './types';
 
@@ -9,6 +9,12 @@ export const createGrid = (): Action => ({
 });
 
 export const selectBlock = (coords: BLOCK_COORDS): AnyAction => ({
+    type: types.SELECT_BLOCK, 
+    coords
+});
+
+export const fillBlock = (value: NUMBERS, coords: BLOCK_COORDS): AnyAction => ({
+    type: types.FILL_BLOCK,
     coords,
-    type: types.SELECT_BLOCK
-})
+    value
+});

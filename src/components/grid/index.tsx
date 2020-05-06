@@ -3,34 +3,48 @@ import useMousetrap from 'react-hook-mousetrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { AnyAction, Dispatch } from 'redux';
 
-import { createGrid, IReducer, selectBlock } from 'reducers';
+import global from 'global';
+
+import { createGrid, IReducer, fillBlock, selectBlock } from 'reducers';
 
 import Block from './block';
 import { Container, Row } from './styles';
-import { INDEX, BLOCK_COORDS } from 'typings';
+import { INDEX, BLOCK_COORDS, NUMBERS, N } from 'typings';
+
+import Confetti from 'react-confetti'
 
 interface IState {
   selectedBlock?: BLOCK_COORDS
+  selectedValue: N
 }
 
 const Grid: FC = () => {
-  const state = useSelector<IReducer, IState>(({ selectedBlock }) => ({ selectedBlock }))
+  const state = useSelector<IReducer, IState>(({ selectedBlock, workingGrid }) => ({
+    selectedBlock,
+    selectedValue: workingGrid && selectedBlock ? 
+      workingGrid[selectedBlock[0]][selectedBlock[1]]
+    : 0,
+  }));
   const dispatch = useDispatch<Dispatch<AnyAction>>();
 
   const create = useCallback(() => dispatch(createGrid()), [dispatch]);
 
-  useEffect(() => {
-    create();
-  }, [create]);
+  const fill = useCallback((n : NUMBERS) => {
+
+    if (state.selectedBlock && state.selectedValue === 0) {
+      dispatch(fillBlock(n, state.selectedBlock))
+    }
+
+  }, [dispatch, state.selectedBlock, , state.selectedValue])
 
   function moveDown() {
     if (state.selectedBlock && state.selectedBlock[0] < 8) {
       dispatch(
         selectBlock([
           (state.selectedBlock[0] + 1) as INDEX,
-          state.selectedBlock[1]
+          state.selectedBlock[1],
         ])
-      )
+      );
     }
   }
 
@@ -39,9 +53,9 @@ const Grid: FC = () => {
       dispatch(
         selectBlock([
           state.selectedBlock[0],
-          (state.selectedBlock[1] - 1 as INDEX)
+          (state.selectedBlock[1] - 1) as INDEX,
         ])
-      )
+      );
     }
   }
 
@@ -50,9 +64,9 @@ const Grid: FC = () => {
       dispatch(
         selectBlock([
           state.selectedBlock[0],
-          (state.selectedBlock[1] + 1 as INDEX)
+          (state.selectedBlock[1] + 1) as INDEX,
         ])
-      )
+      );
     }
   }
 
@@ -61,18 +75,47 @@ const Grid: FC = () => {
       dispatch(
         selectBlock([
           (state.selectedBlock[0] - 1) as INDEX,
-          state.selectedBlock[1]
+          state.selectedBlock[1],
         ])
-      )
+      );
     }
   }
 
-  useMousetrap('down', moveDown)
-  useMousetrap('up', moveUp)
-  useMousetrap('left', moveLeft)
-  useMousetrap('right', moveRight)
+  useMousetrap('1', () => fill(1));
+  useMousetrap('2', () => fill(2));
+  useMousetrap('3', () => fill(3));
+  useMousetrap('4', () => fill(4));
+  useMousetrap('5', () => fill(5));
+  useMousetrap('6', () => fill(6));
+  useMousetrap('7', () => fill(7));
+  useMousetrap('8', () => fill(8));
+  useMousetrap('9', () => fill(9));
+
+  useMousetrap('down', moveDown);
+  useMousetrap('up', moveUp);
+  useMousetrap('left', moveLeft);
+  useMousetrap('right', moveRight);
+
+  useEffect(() => {
+    create();
+  }, [create]);
+
+  const [showConfetti, setShowConfetti] = React.useState(false);
+
+  useEffect(() => {
+    if (global.hasWon) {
+      setShowConfetti(true);
+    }
+    
+    setTimeout(() => {
+      setShowConfetti(false);
+      global.hasWon = false;
+    }, 6000);
+  }, [global.hasWon])
 
   return (
+    <>
+    { showConfetti && <Confetti />}
     <Container data-cy="grid-container">
       {Children.toArray(
         [...Array(9)].map((_, rowIndex) => (
@@ -80,8 +123,8 @@ const Grid: FC = () => {
             {Children.toArray(
               [...Array(9)].map((_, colIndex) => (
                 <Block
-                  colIndex={colIndex as INDEX} 
-                  rowIndex={rowIndex  as INDEX} 
+                  colIndex={colIndex as INDEX}
+                  rowIndex={rowIndex as INDEX}
                 />
               ))
             )}
@@ -89,6 +132,7 @@ const Grid: FC = () => {
         ))
       )}
     </Container>
+    </>
   );
 };
 
