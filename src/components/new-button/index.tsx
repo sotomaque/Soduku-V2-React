@@ -4,6 +4,8 @@ import { Action, Dispatch } from 'redux';
 
 import { createGrid } from 'reducers';
 
+import global from 'global';
+
 import { Button } from 'components';
 
 const NewButton: FC = () => {
@@ -13,6 +15,7 @@ const NewButton: FC = () => {
     const createNewGame = useCallback(() => {
         if (window.confirm("Are you sure?")) {
             dispatch(createGrid())
+            global.hasWon = true
         }
     }, [dispatch])
 

@@ -9,21 +9,23 @@ import { createGrid, IReducer, fillBlock, selectBlock } from 'reducers';
 
 import Block from './block';
 import { Container, Row } from './styles';
-import { INDEX, BLOCK_COORDS, NUMBERS, N } from 'typings';
+import { GRID, INDEX, BLOCK_COORDS, NUMBERS, N } from 'typings';
 
 import Confetti from 'react-confetti'
 
 interface IState {
   selectedBlock?: BLOCK_COORDS
   selectedValue: N
+  solvedGrid?: GRID
 }
 
 const Grid: FC = () => {
-  const state = useSelector<IReducer, IState>(({ selectedBlock, workingGrid }) => ({
+  const state = useSelector<IReducer, IState>(({ selectedBlock, solvedGrid, workingGrid }) => ({
     selectedBlock,
     selectedValue: workingGrid && selectedBlock ? 
       workingGrid[selectedBlock[0]][selectedBlock[1]]
     : 0,
+    solvedGrid
   }));
   const dispatch = useDispatch<Dispatch<AnyAction>>();
 
@@ -35,7 +37,7 @@ const Grid: FC = () => {
       dispatch(fillBlock(n, state.selectedBlock))
     }
 
-  }, [dispatch, state.selectedBlock, , state.selectedValue])
+  }, [dispatch, state.selectedBlock, state.selectedValue])
 
   function moveDown() {
     if (state.selectedBlock && state.selectedBlock[0] < 8) {
@@ -97,8 +99,8 @@ const Grid: FC = () => {
   useMousetrap('right', moveRight);
 
   useEffect(() => {
-    create();
-  }, [create]);
+    if (!state.solvedGrid) create();
+  }, [create, state.solvedGrid]);
 
   const [showConfetti, setShowConfetti] = React.useState(false);
 
@@ -112,7 +114,6 @@ const Grid: FC = () => {
       global.hasWon = false;
     }, 6000);
   }, [global.hasWon])
-
 
 
   return (
