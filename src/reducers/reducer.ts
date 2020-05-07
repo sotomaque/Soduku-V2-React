@@ -18,7 +18,7 @@ function reducer(state = initialState, action: AnyAction): IReducer {
 
             const solvedGrid = createFullGrid();
             const gridCopy = copyGrid(solvedGrid);
-            const challengeGrid = removeNumbers(gridCopy, 1);
+            const challengeGrid = removeNumbers(gridCopy, 8);
 
             const workingGrid = copyGrid(challengeGrid);
 
